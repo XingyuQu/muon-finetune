@@ -1,0 +1,53 @@
+# Custom HumanEval task with EXACT training format (matching codefeedback training data)
+# Usage: lm_eval --tasks humaneval --include_path /path/to/lm_eval_tasks
+#
+# This template matches EXACTLY what's used in training (data.py codefeedback):
+#   template_wo_input = """Below is an instruction that describes a task. Write a response that appropriately completes the request.
+#
+#   ### Instruction:
+#   {instruction}
+#
+#   ### Response:
+#   """
+#
+# The instruction is the code completion task description, similar to CodeFeedback queries.
+#
+# IMPORTANT: Stop tokens strategy:
+# - DO NOT use \ndef, \nclass, \n# etc. - these truncate the code block immediately
+# - DO NOT use \n``` or ```\n - these match both code block START and END
+# - Instead, let the model generate the full response and extract code in post-processing
+# - Use \n\n\n (triple newline) as a soft stop for runaway generation
+# - Post-processing in utils.py extracts code from ```python...``` blocks
+
+task: humaneval
+dataset_path: openai/openai_humaneval
+unsafe_code: true
+output_type: generate_until
+test_split: test
+doc_to_text: !function utils.format_prompt
+doc_to_target: "{{test}}\ncheck({{entry_point}})"
+metric_list:
+  - metric: !function utils.pass_at_k
+    aggregation: mean
+    higher_is_better: true
+    k: [1]
+generation_kwargs:
+  until:
+    - "### Instruction:"
+    - "### Response:"
+    - "\n\n\n"
+    - "</s>"
+    - "<|endoftext|>"
+    - "<|eot_id|>"
+    - "<|end_of_text|>"
+  max_gen_toks: 1024
+  do_sample: false
+repeats: 1
+num_fewshot: 0
+filter_list:
+  - name: "create_test"
+    filter:
+      - function: "custom"
+        filter_fn: !function utils.build_predictions
+metadata:
+  version: 1.0

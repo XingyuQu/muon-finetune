@@ -1,0 +1,93 @@
+# Default configuration for SFT experiments
+#
+
+# ============================================================================
+# Initialization method
+# Options: lora, full_ft
+# ============================================================================
+init_method: "lora"
+
+# ============================================================================
+# Model configuration
+# ============================================================================
+model:
+  name: "meta-llama/Llama-2-7b-hf"
+  dtype: "bf16"     # bf16, fp32
+  flash_attention: false
+  gradient_checkpointing: false
+
+# ============================================================================
+# Dataset configuration
+# ============================================================================
+dataset:
+  name: "meta_math"  # meta_math, wizard_lm, codefeedback
+  max_length: 1024
+
+# ============================================================================
+# PEFT/LoRA configuration
+# ============================================================================
+peft:
+  lora_r: 32
+  lora_alpha: 8
+  lora_dropout: 0.0
+  bias: "none"  # none, all, lora_only
+  target_modules: "all"  # "all" or list like ["q_proj", "v_proj"]
+
+# ============================================================================
+# Optimizer configuration
+# Options: adamw, muon
+# ============================================================================
+optimizer:
+  name: "adamw"
+  # Muon-specific settings
+  muon_momentum: 0.95
+  muon_backend_steps: 5
+  ns_dtype: "bf16"  # bf16, fp32, fp64 for Newton-Schulz iteration
+  ns_using_pe: false  # Use Polar Express coefficients instead of standard Newton-Schulz coefficients
+
+# ============================================================================
+# Training configuration
+# ============================================================================
+training:
+  num_epochs: 1
+  max_steps: -1  # -1 means use num_epochs; positive value overrides num_epochs
+  per_device_batch_size: 1
+  real_batch_size: 128
+  learning_rate: 2e-5
+  warmup_ratio: 0.03
+  weight_decay: 0.0
+  max_grad_norm: 1.0
+  lr_scheduler_type: "cosine"
+  logging_steps: 1
+  save_total_limit: 1  # Number of checkpoints to keep during training
+  save_only_model: false  # If true, only save model weights (no optimizer state) - saves disk space
+  deepspeed: null  # null, "zero2", or path to custom config
+
+# ============================================================================
+# Evaluation configuration
+# ============================================================================
+evaluation:
+  eval_before_training: true  # Evaluate model before training starts
+  eval_times: 5  # Number of times to evaluate during training (e.g., 5 = eval at 20%, 40%, 60%, 80%, 100%)
+  log_eval_samples: true  # Print sample predictions during eval
+  eval_sample_size: 3     # Number of samples to show
+  eval_sample_max_new_tokens: 16
+
+# ============================================================================
+# Experiment configuration
+# ============================================================================
+experiment:
+  seed: 42
+  output_dir: "./results"
+  cleanup_outputs: true  # Clean up checkpoints after training
+  resume_from_checkpoint: null  # Path to checkpoint, or "auto" to auto-detect last checkpoint in output_dir
+
+# ============================================================================
+# Wandb configuration
+# ============================================================================
+wandb:
+  project: "LoRA-experiments"
+  name: null  # auto-generated if null
+  mode: "offline"  # online, offline, disabled
+  group: "default"
+

@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.pyc
+rustbpe/target/
+dev-ignore/
+report.md
+wandb/
+*.csv
+*.pdf
+*.png
+*.json
+*.jsonl
+*.safetensors
+*.pt
+*.parquet
+
+# Sandbox NANOCHAT_BASE_DIR
+test_results/

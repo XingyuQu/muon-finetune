@@ -1,0 +1,7 @@
+mode: lora_one
+bsz: 1
+iters: 8
+max_length: 1024
+dtype: fp32
+stable_gamma: 64
+skip_merge: false

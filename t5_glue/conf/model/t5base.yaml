@@ -1,0 +1,23 @@
+name: t5-base
+epochs: 1
+per_device_batch_size: 32
+real_batch_size: 32
+bf16: False
+early_stopping_patience: 5
+max_length: 128
+logging_steps: 1
+learning_rate: 1e-4
+max_grad_norm: 1.0
+ns_dtype: bf16  # Newton-Schulz lowrank computation dtype: bf16, fp32, fp64
+
+# Optimizer and training hyperparameters
+weight_decay: 0.0
+warmup_ratio: 0.03
+optim: adamw_torch  # HuggingFace optimizer name
+
+# Checkpoint saving strategy
+save_strategy: steps
+save_total_limit: 2
+
+# Optional features
+gradient_checkpointing: False

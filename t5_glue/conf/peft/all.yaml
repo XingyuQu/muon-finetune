@@ -1,0 +1,6 @@
+use_peft: true
+lora_r: null
+lora_relative_r: null
+lora_target_modules: all
+use_rslora: false
+lora_alpha: 16

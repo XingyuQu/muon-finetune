@@ -1,0 +1,16 @@
+defaults:
+  - _self_
+  - model: t5base
+dry_run: False
+seed: 0
+using_pe: False
+eval_protocol: train_val  # train_val | train_val_test
+wandb:
+  entity: null
+  project: "LoRA Methods in PEFT"
+  name: null
+hydra:
+  sweeper:
+    params:
+      ++dataset_name: mnli
+      ++seed: 0

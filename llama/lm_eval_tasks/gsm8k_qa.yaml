@@ -1,0 +1,40 @@
+# Custom GSM8K task with Q:/A: prompt format (matching training data)
+# Usage: lm_eval --tasks gsm8k_qa --include_path /path/to/lm_eval_tasks
+task: gsm8k_qa
+dataset_path: openai/gsm8k
+dataset_name: main
+output_type: generate_until
+training_split: train
+test_split: test
+doc_to_text: "Q: {{question}}\nA: "
+doc_to_target: "{{answer.split('####')[-1].strip()}}"
+generation_kwargs:
+  until:
+    - "Q:"
+    - "</s>"
+    - "<|endoftext|>"
+    - "<|eot_id|>"
+    - "<|end_of_text|>"
+  do_sample: false
+  temperature: 0.0
+  max_gen_toks: 1024
+filter_list:
+  - name: "strict-match"
+    filter:
+      - function: "regex"
+        regex_pattern: "#### (\\-?[0-9\\.,]+)"
+      - function: "take_first"
+  - name: "flexible-extract"
+    filter:
+      - function: "regex"
+        regex_pattern: "(-?[$0-9.,]{2,})|(-?[0-9]+)"
+        group_select: -1
+      - function: "take_first"
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+    ignore_case: true
+    ignore_punctuation: true
+metadata:
+  version: 1.0

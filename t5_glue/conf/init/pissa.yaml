@@ -1,0 +1,4 @@
+mode: pissa
+# Set to a positive integer to use fast SVD (pissa_niter_X). Leave null for full SVD.
+pissa_niter: null
+dtype: fp32
