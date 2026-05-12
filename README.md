@@ -1,6 +1,6 @@
 # Can Muon Fine-tune Adam-Pretrained Models?
 
-Code release for the ICML 2026 paper *Can Muon Fine-tune Adam-Pretrained Models?*
+Code release for the ICML 2026 paper [*Can Muon Fine-tune Adam-Pretrained Models?*](https://arxiv.org/abs/2605.10468)
 
 ## Repository layout
 
