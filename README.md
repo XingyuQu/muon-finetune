@@ -26,9 +26,9 @@ Three environments cover the four pillars:
 
 ### `muon_ft` (training)
 
-The `transformers` / `accelerate` / `wandb` / `datasets` / `hydra-core` versions below are the ones used in the paper. Letting pip pick the latest currently lands on `transformers 5.x`, which has API changes that silently break the HuggingFace Trainer ↔ wandb integration (`wandb.init()` succeeds but `train/loss`, `eval/accuracy` etc. never appear on the dashboard). Always install `peft` from the **vendored** `peft/` in this repo (a fork of [LoRA-GA's PEFT](https://github.com/Outsider565/LoRA-GA)), not from PyPI — the t5-glue LoRA-Pro / LoRA-RITE wrappers depend on the fork's internal hooks.
+Always install `peft` from the **vendored** `peft/` in this repo (a fork of [LoRA-GA's PEFT](https://github.com/Outsider565/LoRA-GA)), not from PyPI — the t5-glue LoRA-Pro / LoRA-RITE wrappers depend on the fork's internal hooks.
 
-Run the commands below from the repo root (so that `./peft` resolves correctly).
+Run the commands below from the repo root.
 
 **CUDA**:
 
@@ -70,7 +70,7 @@ pip install "lm_eval[hf,vllm,api]" wandb
 
 ### NanoChat — `nanochat/`
 
-Pretrain a 561M depth-20 transformer on FineWeb-Edu, then fine-tune on WikiText-2 to study optimizer mismatch. Setup, the 5-step reproduction pipeline (pretraining → WikiText LR sweep → best-LR trajectory runs → spectral analysis), output layout, and which artefacts are gitignored vs. regenerable are all documented in [`nanochat/README.md`](nanochat/README.md).
+Pretrain a 561M depth-20 transformer on FineWeb-Edu, then fine-tune on WikiText-2 to study optimizer mismatch. Setup, the 5-step reproduction pipeline (pretraining → WikiText LR sweep → best-LR trajectory runs → spectral analysis), and output layout are all documented in [`nanochat/README.md`](nanochat/README.md).
 
 ### T5-GLUE — `t5_glue/`
 
