@@ -180,4 +180,10 @@ CLIP scripts run in online mode by default (no `HF_HUB_OFFLINE`); the first run 
 ## Citation
 
 ```bibtex
+@inproceedings{qu2026can,
+  title={Can Muon Fine-tune Adam-Pretrained Models?},
+  author={Qu, Xingyu and Huang, Peigeng and Horvath, Samuel},
+  booktitle={International Conference on Machine Learning},
+  year={2026},
+}
 ```
